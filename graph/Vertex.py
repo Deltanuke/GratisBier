@@ -91,3 +91,7 @@ class Vertex(object):
         Returns the degree of the vertex
         """
         return sum(map(len, self._incidence.values()))
+
+    @property
+    def color(self) -> int:
+        return self.color
