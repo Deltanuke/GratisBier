@@ -41,6 +41,7 @@ class Vertex(object):
             label = graph._next_label()
 
         self._graph = graph
+        self.color = -1
         self.label = label
         self._incidence = {}
 
@@ -111,6 +112,12 @@ class Vertex(object):
         Returns the degree of the vertex
         """
         return sum(map(len, self._incidence.values()))
+
+    def get_neighbour_colors(self):
+        res = []
+        for v in self.neighbours:
+            res.append(v.color)
+        return res
 
 
 class Edge(object):
@@ -210,6 +217,9 @@ class Graph(object):
         self._directed = directed
         self._next_label_value = 0
 
+        self._lowest_color = -1
+        self._color_was_used = False
+
         for i in range(n):
             self.add_vertex(Vertex(self))
 
@@ -236,6 +246,15 @@ class Graph(object):
         result = self._next_label_value
         self._next_label_value += 1
         return result
+
+    def apply_color(self) -> int:
+        self._color_was_used = True
+        return self._lowest_color
+
+    def advance_color(self):
+        if self._color_was_used:
+            self._lowest_color += 1
+            self._color_was_used = False
 
     @property
     def simple(self) -> bool:
@@ -359,6 +378,12 @@ class Graph(object):
         :return: Whether the vertices are adjacent
         """
         return v in u.neighbours and (not self.directed or any(e.head == v for e in u.incidence))
+
+    def get_coloring(self) -> dict:
+        res = {}
+        for v in self.vertices:
+            res[v] = v.color
+        return res
 
 
 class UnsafeGraph(Graph):
