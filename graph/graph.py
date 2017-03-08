@@ -385,6 +385,13 @@ class Graph(object):
             res[v] = v.color
         return res
 
+    def get_color_class(self, i):
+        res = []
+        for v in self.vertices:
+            if v.color == i:
+                res.append(v)
+        return res
+
 
 class UnsafeGraph(Graph):
     @property
