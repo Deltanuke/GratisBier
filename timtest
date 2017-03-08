@@ -34,6 +34,7 @@ with open('colorref_smallexample_4_7.grl') as f:
 
 print(coloring(G))
 print(color_to_label(coloring(G)))
+
 # colored_graph = coloring(G)
 # color_to_label(colored_graph)
 
