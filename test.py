@@ -2,8 +2,6 @@ from graph.graph import *
 from graph.graph_io import *
 #, save_graph, write_dot
 
-with open('colorref_smallexample_4_7.grl') as f:
-    G = load_graph(f)
 
 def coloring(G):
     for v in G.vertices:
@@ -27,5 +25,18 @@ def coloring(G):
                 elif nu != nv:
                     u.color = maxcolor + 1
                     maxcolor = maxcolor + 1
-    return G.vertices
-print(coloring(G))
+    return G
+
+
+def color_to_label(g: Graph):
+    for v in g.vertices:
+        v.label = v.color
+
+with open('colorref_smallexample_4_7.grl') as f:
+    G = load_graph(f)
+
+colored_graph = coloring(G)
+# color_to_label(colored_graph)
+
+with open('output.dot', 'w') as f:
+    write_dot(colored_graph, f)
