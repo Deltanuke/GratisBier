@@ -71,7 +71,7 @@ def read_graph(graphclass, f: IO[str]) -> Tuple[Graph, List[str], bool]:
     indexed_nodes = list(graph.vertices)
 
     for edge in edges:
-        graph += Edge(indexed_nodes[edge[0]], indexed_nodes[edge[1]], edge[2])
+        graph += edge(indexed_nodes[edge[0]], indexed_nodes[edge[1]], edge[2])
 
     if line != '' and line[0] == '-':
         return graph, options, True

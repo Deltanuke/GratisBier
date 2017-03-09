@@ -95,3 +95,28 @@ class Vertex(object):
     @property
     def color(self) -> int:
         return self.color
+
+    @color.setter
+    def color(self, c):
+        self.color = c
+
+    @property
+    def color_next(self) -> int:
+        return self.color_next
+
+    @color_next.setter
+    def color_next(self, c):
+        self.color_next = c
+
+    def update(self):
+        self.color = self.color_next
+
+    def same_vertices(self, other: "Vertex"):
+        oNeighbours = other.neighbours
+        for n in self.neighbours:
+            for oN in oNeighbours:
+                if n.color == oN.color:
+                    oNeighbours.remove(oN)
+                    break
+                return False
+        return True

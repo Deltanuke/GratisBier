@@ -5,7 +5,7 @@ This is a module for working with directed and undirected multigraphs.
 # version: 01-02-2017, Pieter Bos, Tariq Bontekoe
 
 from typing import List, Union, Set
-from . import GraphError, Vertex, Edge
+from . import Edge, GraphError, Vertex
 
 
 class Graph(object):
