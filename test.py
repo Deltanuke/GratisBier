@@ -134,8 +134,10 @@ def get_all_neighbour_colors(g: Graph):
         res[v] = v.get_neighbour_colors()
     return res
 
-with open('colorref_smallexample_2_49.grl') as f:
+with open('colorref_smallexample_4_16.grl') as f:
     G = load_graph(f)
 
-color(G)
+for v in G.vertices:
+    v.colortext="cyan"
+
 output(G, "output/result.dot")
