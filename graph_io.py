@@ -12,10 +12,14 @@ Includes functions for reading and writing graphs, in a very simple readable for
 import sys
 from typing import IO, Tuple, List, Union
 
-from graph import Graph, Edge
+from graph import *
 
 DEFAULT_COLOR_SCHEME = "paired12"
 NUM_COLORS = 12
+colors = list()
+colorsSet = {"aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "bisque", "black", "blanchedalmond", "blue", "blueviolet", "brown", "burlywood", "cadetblue", "chartreuse", "chocolate", "coral", "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan", "darkgoldenrod", "darkgray", "darkgreen", "darkgrey", "darkkhaki", "darkmagenta", "darkolivegreen", "darkorange", "darkorchid", "darkred", "darksalmon", "darkseagreen", "darkslateblue", "darkslategray", "darkslategrey", "darkturquoise", "darkviolet", "deeppink", "deepskyblue", "dimgray", "dimgrey", "dodgerblue", "firebrick", "floralwhite", "forestgreen", "fuchsia", "gainsboro", "ghostwhite", "gold", "goldenrod", "gray", "grey", "green", "greenyellow", "honeydew", "hotpink", "indianred", "indigo", "ivory", "khaki", "lavender", "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgray", "lightgreen", "lightgrey", "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslategray", "lightslategrey", "lightsteelblue", "lightyellow", "lime", "limegreen", "linen", "magenta", "maroon", "mediumaquamarine", "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue", "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", "mistyrose", "moccasin", "navajowhite", "navy", "oldlace", "olive", "olivedrab", "orange", "orangered", "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred", "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "purple", "red", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell", "sienna", "silver", "skyblue", "slateblue", "slategray", "slategrey", "snow", "springgreen", "steelblue", "tan", "teal", "thistle", "tomato", "turquoise", "violet", "wheat", "white", "whitesmoke", "yellow", "yellowgreen"}
+for color in colorsSet:
+    colors.append(color)
 
 
 def read_line(f: IO[str]) -> str:
@@ -71,7 +75,7 @@ def read_graph(graphclass, f: IO[str]) -> Tuple[Graph, List[str], bool]:
     indexed_nodes = list(graph.vertices)
 
     for edge in edges:
-        graph += edge(indexed_nodes[edge[0]], indexed_nodes[edge[1]], edge[2])
+        graph += Edge(indexed_nodes[edge[0]], indexed_nodes[edge[1]], edge[2])
 
     if line != '' and line[0] == '-':
         return graph, options, True
@@ -217,6 +221,8 @@ def write_dot(graph: Graph, f: IO[str], directed=False):
             options += 'label="' + str(v.label) + '",'
         if hasattr(v, 'colortext'):
             options += 'color="' + v.colortext + '",'
+        elif hasattr(v, "color"):
+            options += 'color="' + colors[v.color % len(colors)] + '",'
         elif hasattr(v, 'colornum'):
             options += 'color=' + str(v.colornum % NUM_COLORS + 1) + ', colorscheme=' + DEFAULT_COLOR_SCHEME + ','
             if v.colornum >= NUM_COLORS:

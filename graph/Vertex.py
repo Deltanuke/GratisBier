@@ -1,4 +1,5 @@
 from typing import List
+from . import *
 
 
 class Vertex(object):
@@ -19,7 +20,9 @@ class Vertex(object):
         """
         if label is None:
             label = graph._next_label()
-
+        self.colornum = 0
+        self._color_next = 0
+        self._color = 0
         self._graph = graph
         self.label = label
         self._incidence = {}
@@ -29,14 +32,14 @@ class Vertex(object):
         A programmer-friendly representation of the vertex.
         :return: The string to approximate the constructor arguments of the `Vertex'
         """
-        return 'Vertex(label={}, #incident={})'.format(self.label, len(self._incidence))
+        return 'Vertex(label={}, #incident={} ,color={})'.format(self.label, len(self._incidence), self._color)
 
     def __str__(self) -> str:
         """
         A user-friendly representation of the vertex, that is, its label.
         :return: The string representation of the label.
         """
-        return str(self.label)
+        return str(self.__repr__())
 
     def is_adjacent(self, other: "Vertex") -> bool:
         """
@@ -86,30 +89,31 @@ class Vertex(object):
         return list(self._incidence.keys())
 
     @property
+    def color(self) -> int:
+        return self._color
+
+    @color.setter
+    def color(self, color):
+        self.colornum = color
+        self._color = color
+
+    @property
+    def color_next(self) -> int:
+        return self._color_next
+
+    @color_next.setter
+    def color_next(self, color_next):
+        self._color_next = color_next
+
+    @property
     def degree(self) -> int:
         """
         Returns the degree of the vertex
         """
         return sum(map(len, self._incidence.values()))
 
-    @property
-    def color(self) -> int:
-        return self.color
-
-    @color.setter
-    def color(self, c):
-        self.color = c
-
-    @property
-    def color_next(self) -> int:
-        return self.color_next
-
-    @color_next.setter
-    def color_next(self, c):
-        self.color_next = c
-
     def update(self):
-        self.color = self.color_next
+        self._color = self._color_next
 
     def same_vertices(self, other: "Vertex"):
         oNeighbours = other.neighbours
@@ -118,5 +122,6 @@ class Vertex(object):
                 if n.color == oN.color:
                     oNeighbours.remove(oN)
                     break
+            else:
                 return False
-        return True
+        return len(oNeighbours) == 0

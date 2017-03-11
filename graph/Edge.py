@@ -1,7 +1,7 @@
 """"""
 
 
-from . import Vertex, GraphError
+from . import *
 
 
 class Edge(object):
