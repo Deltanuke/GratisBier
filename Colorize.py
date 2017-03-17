@@ -40,7 +40,6 @@ def colorize_graph(gr: Graph):
             index = v.degree
 
     #prepare for loop
-    changed = True
     q = list()
     #change dict to list to be iterated updon
     for vertices in d.values():
@@ -49,21 +48,25 @@ def colorize_graph(gr: Graph):
     #set the index correctly
     index += 1
 
-    #start loop empty copy of the list and set changed back to False
-    while (not is_done(q)) and changed:
+    colorize(q, index)
+
+def colorize(main_list : "list", index : int):
+    # start loop empty copy of the list and set changed back to False
+    changed = True
+    while changed:
         # empty copy of the list and set changed back to False
-        qt = list()
+        copy_list = list()
         changed = False
-        for listVert in q:
+        for listVert in main_list:
             # create empty list for possibly splitting the current list
-            qtt = list()
+            copy_to_split = list()
             if len(listVert) > 1:
                 # more than 1 entry in this list, eligible for splitting
                 for v in listVert:
-                    if len(qtt) > 0:
+                    if len(copy_to_split) > 0:
                         # if an entry has already been posted to qtt check if the current vertice has the same neighbour
                         appended = False
-                        for f in qtt:
+                        for f in copy_to_split:
                             # if the current vertice has the same neighbours as the first item in the current list
                             # append this vertice to the list
                             if f[0].same_vertices(v):
@@ -78,38 +81,34 @@ def colorize_graph(gr: Graph):
                             v.color_next = index
                             index += 1
                             l.append(v)
-                            qtt.append(l)
+                            copy_to_split.append(l)
                             changed = True
                     # there is not a single entry in qtt, create a new entry and append the current vertice
                     else:
                         l = list()
                         l.append(v)
-                        qtt.append(l)
+                        copy_to_split.append(l)
             # the current list has the size of 1 so is unable to be split. keep it this way
             elif len(listVert) == 1:
-                qt.append(listVert)
+                copy_list.append(listVert)
                 continue
             # the current list we were trying to split isn't empty so copy all entries from qtt (current working list0
             # to the outer working list qt
             if len(listVert) != 0:
-                for vertices in qtt:
-                    qt.append(vertices)
+                for vertices in copy_to_split:
+                    copy_list.append(vertices)
         # update every color in the list to prepare for the next iteration
-        for vertices in qt:
+        for vertices in copy_list:
             for v in vertices:
                 v.update()
         # update the final list
-        q = qt
-
+        main_list = copy_list
 
 def is_done(lists: "list"):
-    for vertices in lists:
-        if len(vertices) > 1:
-            return False
     return True
 
 
-with open('colorref_largeexample_4_1026.grl') as _file:
+with open('input/colorref_smallexample_4_16.grl') as _file:
     g = load_graph(_file)
 
 timeStart = time.time()
