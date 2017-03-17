@@ -1,6 +1,7 @@
 from graph import *
 import time
 from graph_io import *
+import time
 
 """"
 the idea:
@@ -27,7 +28,7 @@ def colorize_graph(gr: Graph):
     d = dict()
     index = 0
 
-    #do the initial coloring based on indices
+    # do the initial coloring based on indices
     for v in gr.vertices:
         v.color = v.degree
         v.color_next = v.degree
@@ -100,15 +101,20 @@ def colorize_graph(gr: Graph):
         # update the final list
         q = qt
 
+
 def is_done(lists: "list"):
     for vertices in lists:
         if len(vertices) > 1:
             return False
     return True
 
-with open('colorref_smallexample_2_49.grl') as _file:
+
+with open('colorref_largeexample_4_1026.grl') as _file:
     g = load_graph(_file)
 
+timeStart = time.time()
 colorize_graph(g)
+print(time.time() - timeStart)
 with open('output.dot', 'w') as f:
     write_dot(g, f)
+
