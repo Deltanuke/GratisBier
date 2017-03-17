@@ -75,7 +75,7 @@ def colorize_graph(gr: Graph):
                         # any previous vertices, create a new entry in qtt and set changed to True and set a new color
                         if not appended:
                             l = list()
-                            v.color_next = index;
+                            v.color_next = index
                             index += 1
                             l.append(v)
                             qtt.append(l)
