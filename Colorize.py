@@ -39,18 +39,80 @@ def colorize_graph(gr: Graph):
         if v.degree > index:
             index = v.degree
 
-    #prepare for loop
+    # prepare for loop
     q = list()
-    #change dict to list to be iterated updon
+    # change dict to list to be iterated updon
     for vertices in d.values():
         q.append(vertices)
 
-    #set the index correctly
+    # set the index correctly
     index += 1
 
     colorize(q, index)
 
-def colorize(main_list : "list", index : int):
+
+def colorize_list(graphs : list):
+    d = dict()
+    index = 0
+
+    # do the initial coloring based on indices
+    for gr in graphs:
+        for v in gr.vertices:
+            v.color = v.degree
+            v.color_next = v.degree
+            if v.color not in d.keys():
+                d[v.color] = list()
+            d[v.color].append(v)
+            if v.degree > index:
+                index = v.degree
+
+    # prepare for loop
+    q = list()
+    # change dict to list to be iterated updon
+    for vertices in d.values():
+        q.append(vertices)
+
+    # set the index correctly
+    index += 1
+
+    q = colorize(q, index)
+    check_iso(q, graphs)
+
+
+def check_iso(list_of_list_verticecs : list, graph_list: list):
+    main_graphs = dict()
+    for graph1 in graph_list:
+        main_graphs[graph1] = graph_list.copy()
+        main_graphs[graph1].remove(graph1)
+    for list_vertices in list_of_list_verticecs:
+        graphs = dict()
+        for graph1 in graph_list:
+            graphs[graph1] = list()
+        for vertex in list_vertices:
+            graphs[vertex.graph].append(vertex)
+        for k1 in graphs:
+            l1 = graphs[k1]
+            for k2 in graphs:
+                l2 = graphs[k2]
+                if len(l1) != len(l2):
+                    try:
+                        main_graphs[k1].remove(k2)
+                    except ValueError:
+                        pass
+                    try:
+                        main_graphs[k2].remove(k1)
+                    except ValueError:
+                        pass
+    for graph in main_graphs.keys():
+        sys.stdout.write("Graph: " + graph.__repr__() + " is iso with: ")
+        sys.stdout.flush()
+        for gr in main_graphs[graph]:
+            sys.stdout.write(gr.__repr__() + ", ")
+        sys.stdout.write("\n")
+        sys.stdout.flush()
+
+
+def colorize(main_list: "list", index: int):
     # start loop empty copy of the list and set changed back to False
     changed = True
     while changed:
@@ -103,17 +165,22 @@ def colorize(main_list : "list", index : int):
                 v.update()
         # update the final list
         main_list = copy_list
+    return main_list
+
 
 def is_done(lists: "list"):
     return True
 
 
-with open('input/colorref_smallexample_4_16.grl') as _file:
-    g = load_graph(_file)
-
+with open('input/colorref_smallexample_6_15.grl') as _file:
+    g, o = read_graph_list(Graph, _file)
+print(g)
+i = 0
+for graph in g:
+    graph.id = i
+    i += 1
 timeStart = time.time()
-colorize_graph(g)
+colorize_list(g)
 print(time.time() - timeStart)
-with open('output.dot', 'w') as f:
-    write_dot(g, f)
+
 

@@ -16,6 +16,7 @@ class Graph(object):
         :param simple: Whether the graph should be a simple graph, that is, not have multi-edges or loops.
         :param n: Optional, the number of vertices the graph should create immediately
         """
+        self._id = 0
         self._v = list()
         self._e = list()
         self._simple = simple
@@ -30,8 +31,8 @@ class Graph(object):
         A programmer-friendly representation of the Graph.
         :return: The string to approximate the constructor arguments of the `Graph'
         """
-        return 'Graph(directed={}, simple={}, #edges={n_edges}, #vertices={n_vertices})'.format(
-            self._directed, self._simple, n_edges=len(self._e), n_vertices=len(self._v))
+        return 'Graph(id={}, directed={}, simple={}, #edges={n_edges}, #vertices={n_vertices})'.format(
+            self._id, self._directed, self._simple, n_edges=len(self._e), n_vertices=len(self._v))
 
     def __str__(self) -> str:
         """
@@ -78,6 +79,14 @@ class Graph(object):
         :return: The `set` of edges of the graph
         """
         return list(self._e)
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, id):
+        self._id = id
 
     def __iter__(self):
         """
