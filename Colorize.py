@@ -112,9 +112,8 @@ def is_done(lists: "list"):
 with open('colorref_largeexample_4_1026.grl') as _file:
     g = load_graph(_file)
 
-timeStart = time.time()
 colorize_graph(g)
-print(time.time() - timeStart)
+
 with open('output.dot', 'w') as f:
     write_dot(g, f)
 
