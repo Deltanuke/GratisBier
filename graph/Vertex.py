@@ -125,3 +125,15 @@ class Vertex(object):
             else:
                 return False
         return len(oNeighbours) == 0
+
+    def farthest(self, sender: "Vertex" = None):
+        length = 0
+        vertices_path = []
+        for v in self.neighbours:
+            if v != sender:
+                length_temp, vertices_temp = v.farthest(self)
+                if length_temp + 1 > length:
+                    length = length_temp + 1
+                    vertices_path = vertices_temp
+        vertices_path.append(self)
+        return length, vertices_path
