@@ -147,3 +147,10 @@ ENV/
 .ropeproject
 
 # End of https://www.gitignore.io/api/python,pycharm
+
+output/
+input/
+.output/
+.input/
+.output
+.input
