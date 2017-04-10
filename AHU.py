@@ -61,14 +61,22 @@ def ahu_root_isomorphism(r1: Vertex, r2: Vertex):
     else:
         return False
 
-with open('input/bigtrees1.grl') as _file:
+with open('input/torus144.grl') as _file:
     gr,o = read_graph_list(Graph, _file)
 
-first = gr[1]
-second = gr[3]
+first = gr[0]
+second = gr[1]
 
-isomorph = ahu_tree_isomorhpism(first, second)
-print(isomorph)
+start = time.time()
+for i in range(0, 10000):
+    is_a_tree = first.is_tree()
+diff = time.time() - start
+
+print("first is a tree: %s. %s" % (diff, is_a_tree))
+
+
+#isomorph = ahu_tree_isomorhpism(first, second)
+#print(isomorph)
 
 with open('outputfirst.dot', 'w') as f:
     write_dot(first, f)
