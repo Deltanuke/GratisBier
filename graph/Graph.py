@@ -182,6 +182,8 @@ class Graph(object):
         return v in u.neighbours and (not self.directed or any(e.head == v for e in u.incidence))
 
     def is_tree(self):
+        if len(self.vertices) - 1 != len(self.edges):
+            return False
         first = self.vertices[0]
         frontier = [(first, first.neighbours.copy())]
         closed = [first]

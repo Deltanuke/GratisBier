@@ -83,11 +83,11 @@ def colorize_list(graphs : list):
         tuples = create_tuples_from_isos(filtered_isos)
         index += 1
         for graph1, graph2 in tuples:
-            print("Testing graph " + str(graph1.id) + " against graph " + str(graph2.id))
+            #print("Testing graph " + str(graph1.id) + " against graph " + str(graph2.id))
             plist = purify_list(q, graph1, graph2)
             count = count_ismorphisms(plist, graph1, graph2, index, True)
-            print("Graph " + str(graph1.id) + " is ismorphic with graph " + str(graph2.id) + ", with " + str(count) +
-                  " isomorphishms")
+            #print("Graph " + str(graph1.id) + " is ismorphic with graph " + str(graph2.id) + ", with " + str(count) +
+            #      " isomorphishms")
 
 def create_tuples_from_isos(dict_isos: dict) -> list:
     tuples = list()
@@ -258,6 +258,7 @@ def is_iso(list_of_list_verticecs : list, graph_list: list) -> dict:
             sys.stdout.write(str(gr.id) + ", ")
         sys.stdout.write("\n")
         sys.stdout.flush()
+        pass
     return main_graphs
 
 
@@ -408,14 +409,13 @@ def colorize_faster(main_list: "list", index: int) -> Tuple[list, int]:
 def is_done(lists: "list"):
     return True
 
-with open('input/modulesC.grl') as _file:
+with open('input/bigtrees2.grl') as _file:
     g, o = read_graph_list(Graph, _file)
-print(g)
-i = 0
-for graph in g:
-    graph.id = i
-    i += 1
-timeStart = time.time()
-colorize_list(g)
-print(time.time() - timeStart)
 
+graphs = [g[0], g[1], g[2], g[3]]
+
+start = time.time()
+colorize_list(graphs)
+diff = time.time() - start
+
+print("The time it took was %s" % diff)
