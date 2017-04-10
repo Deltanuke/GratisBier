@@ -40,7 +40,7 @@ def childrenAreIsomorph(head1: Vertex, children1: List["Vertex"], head2: Vertex,
             if isIsomorph(a, extractChildren(head1, a), b, extractChildren(head2, b)):
                 copyc2 = children2.copy()
                 copyc2.remove(b)
-                if len(children1) == 0 or childrenAreIsomorph(head1, children1, head2, copyc2):
+                if len(children1) == 0 or childrenAreIsomorph(head1, children1.copy(), head2, copyc2):
                     return True
         return False
 
