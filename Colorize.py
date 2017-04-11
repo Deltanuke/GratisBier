@@ -21,7 +21,7 @@ create a new 'new list' and start the process over again
 """
 
 
-mode = 2  # 0 = count automorphisms between graphs, 1 = count automorphisms in a singel graph, 2 = detect isomorphism
+mode = 2  # 0 = count automorphisms between graphs, 1 = count automorphisms in a single graph, 2 = detect isomorphism
 input_file = "input/basic/basicGIAut.grl"
 
 

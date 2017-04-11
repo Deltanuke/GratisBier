@@ -4,7 +4,7 @@ from graph_io import *
 import time
 
 path = "input/Competition/c1/comp1.gr"
-mode = 0 # 0 for isomorphism, 1 for authomorphism
+mode = 0  # 0 for isomorphism, 1 for authomorphism
 
 def root(G: Graph):
     r = G.vertices[0]
