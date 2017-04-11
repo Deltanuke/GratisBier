@@ -33,7 +33,7 @@ def colorize_graph(gr: Graph):
     for v in gr.vertices:
         v.color = v.degree
         v.color_next = v.degree
-        print(d.keys())
+        #print(d.keys())
         if v.color not in d.keys():
             d[v.color] = list()
         d[v.color].append(v)
@@ -83,11 +83,11 @@ def colorize_list(graphs : list):
         tuples = create_tuples_from_isos(filtered_isos)
         index += 1
         for graph1, graph2 in tuples:
-            print("Testing graph " + str(graph1.id) + " against graph " + str(graph2.id))
+            #print("Testing graph " + str(graph1.id) + " against graph " + str(graph2.id))
             plist = purify_list(q, graph1, graph2)
             count = count_ismorphisms(plist, graph1, graph2, index, True)
-            print("Graph " + str(graph1.id) + " is ismorphic with graph " + str(graph2.id) + ", with " + str(count) +
-                  " isomorphishms")
+            #print("Graph " + str(graph1.id) + " is ismorphic with graph " + str(graph2.id) + ", with " + str(count) +
+#                  " isomorphishms")
 
 def create_tuples_from_isos(dict_isos: dict) -> list:
     tuples = list()
@@ -156,7 +156,8 @@ def count_ismorphisms(list_vertices: list, graph1: Graph, graph2: Graph, index: 
         vertex.color_next = index
         color_class.remove(vertex)
         if parent:
-            print(vertex.label)
+            pass
+            # print(vertex.label)
         for change_vertex in color_class:
             if change_vertex.graph == graph2:
                 change_vertex.color = index
@@ -219,8 +220,9 @@ def filter_bijections(isos: dict, vertices: list) -> dict:
                     filtered_iso[graph] = list()
                 filtered_iso[graph].append(graph_1)
             else:
-                print(
-                    "Graph " + str(graph.id) + " is ismorphic with graph " + str(graph_1.id) + ", with 1 isomorphism")
+                pass
+                #print(
+                #    "Graph " + str(graph.id) + " is ismorphic with graph " + str(graph_1.id) + ", with 1 isomorphism")
     return filtered_iso
 
 
@@ -252,12 +254,13 @@ def is_iso(list_of_list_verticecs : list, graph_list: list) -> dict:
                         pass
     remove_duplicate_isos(main_graphs)
     for graph in main_graphs.keys():
-        sys.stdout.write("Graph: " + str(graph.id) + " is iso with: ")
-        sys.stdout.flush()
-        for gr in main_graphs[graph]:
-            sys.stdout.write(str(gr.id) + ", ")
-        sys.stdout.write("\n")
-        sys.stdout.flush()
+        pass
+        # sys.stdout.write("Graph: " + str(graph.id) + " is iso with: ")
+        # sys.stdout.flush()
+        # for gr in main_graphs[graph]:
+        #     sys.stdout.write(str(gr.id) + ", ")
+        # sys.stdout.write("\n")
+        # sys.stdout.flush()
     return main_graphs
 
 
@@ -408,14 +411,24 @@ def colorize_faster(main_list: "list", index: int) -> Tuple[list, int]:
 def is_done(lists: "list"):
     return True
 
-with open('input/modulesC.grl') as _file:
+with open('input/bigtrees3.grl') as _file:
     g, o = read_graph_list(Graph, _file)
-print(g)
-i = 0
-for graph in g:
-    graph.id = i
-    i += 1
-timeStart = time.time()
-colorize_list(g)
-print(time.time() - timeStart)
+
+start = time.time()
+for i in range(10):
+    for x in range(0, 3):
+        for y in range(0, 3):
+            colorize_list([g[x], g[y]])
+diff = (time.time() - start) / 160
+
+print("Time: %s. #Vertices: %s." % (diff, len(g[0].vertices)))
+
+# print(g)
+# i = 0
+# for graph in g:
+#     graph.id = i
+#     i += 1
+# timeStart = time.time()
+# colorize_list(g)
+# print(time.time() - timeStart)
 

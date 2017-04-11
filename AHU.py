@@ -20,7 +20,7 @@ def assign_canonical_names(v: Vertex, super: Vertex = None):
     if super is not None:
         children.remove(super)
     if len(children) <= 0:
-        print("Leaf: %s. Ch'10', '10']ildren: %s. #children: %s" % (v, children, len(children)))
+        #print("Leaf: %s. Ch'10', '10']ildren: %s. #children: %s" % (v, children, len(children)))
         v.canonical_name = "10"
     else:
         for u in children:
@@ -29,12 +29,12 @@ def assign_canonical_names(v: Vertex, super: Vertex = None):
         for u in children:
             children_names.append(u.canonical_name)
         children_names = sorted(children_names)
-        print("Children names: %s" % children_names)
+        #print("Children names: %s" % children_names)
         temp = "1"
         for i in range(0, len(children_names)):
             temp += children_names[i]
         temp += "0"
-        print("The newly assigned name is %s" % temp)
+        #print("The newly assigned name is %s" % temp)
         v.canonical_name = temp
 
 
@@ -42,8 +42,8 @@ def ahu_tree_isomorhpism(G1: Graph, G2: Graph):
     r11, r12 = root(G1)
     r21, r22 = root(G2)
 
-    print("The roots are %s and %s for graph 1" % (r11, r12))
-    print("The roots are %s and %s for graph 1" % (r21, r22))
+    #print("The roots are %s and %s for graph 1" % (r11, r12))
+    #print("The roots are %s and %s for graph 1" % (r21, r22))
 
     if r12 is None and r22 is None:
         return ahu_root_isomorphism(r11, r21)
@@ -61,26 +61,19 @@ def ahu_root_isomorphism(r1: Vertex, r2: Vertex):
     else:
         return False
 
-with open('input/torus144.grl') as _file:
+with open('input/bigtrees3.grl') as _file:
     gr,o = read_graph_list(Graph, _file)
 
-first = gr[0]
-second = gr[1]
-
 start = time.time()
-for i in range(0, 10000):
-    is_a_tree = first.is_tree()
-diff = time.time() - start
+for i in range(0, 100):
+    for x in range(0, 3):
+        for y in range(0, 3):
+            iso = ahu_tree_isomorhpism(gr[x], gr[y])
+diff = (time.time() - start) / 1600
 
-print("first is a tree: %s. %s" % (diff, is_a_tree))
+print("Time: %s" % (diff))
 
 
 #isomorph = ahu_tree_isomorhpism(first, second)
 #print(isomorph)
-
-with open('outputfirst.dot', 'w') as f:
-    write_dot(first, f)
-
-with open('outputsecond.dot', 'w') as f:
-    write_dot(second, f)
 

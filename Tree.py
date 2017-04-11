@@ -2,14 +2,32 @@ from typing import List
 from graph import Graph, Vertex
 from graph_io import *
 import time
+import AHU
+
+
+class Counter():
+    def __init__(self):
+        self.i = 0
+
+    def increment(self):
+        self.i += 1
+
+    def get(self):
+        return self.i
+comparisons = Counter()
+
 
 # Use this method when you are sure that both graphs are trees but unsure wether they are isomorph
 def areIsomorph(graph1: Graph, graph2: Graph):
-    head1 = graph1.vertices[0]
-    for head2 in graph2.vertices:
-        if isomorph(head1, head2):
-                return True, head1, head2
-    return False, None, None
+    head11, head12 = AHU.root(graph1)
+    head21, head22 = AHU.root(graph2)
+    # print("Heads 1: %s, %s. Heads 2: %s, %s" % (head11, head12, head21, head22))
+    if head12 is None and head22 is None:
+        return isomorph(head11, head21)
+    if head12 is not None and head22 is not None:
+        return isomorph(head12, head21) or isomorph(head12, head22)
+    else:
+        return False
 
 
 # Use this method when you are sure that both graphs are trees and for sure that if they are isomorph the given heads must be equal
@@ -54,15 +72,19 @@ def extractChildren(head: Vertex, v: Vertex):
 with open('input/bigtrees1.grl') as _file:
     gr,o = read_graph_list(Graph, _file)
 
-first = gr[0]
-second = gr[1]
+start = time.time()
+for i in range(100):
+    for x in range(0, 3):
+        for y in range(0, 3):
+            iso = areIsomorph(gr[x], gr[y])
+diff = (time.time() - start) / 1600
 
-iso, head1, head2 = areIsomorph(first, second)
-print("The trees were %s with the heads %s and %s" % (iso, head1, head2))
+print("The trees were %s, solved in %s. #VERTICES = %s" % (iso, diff, len(gr[0].vertices)))
+# print("# %s comparisons were made" % comparisons.get())
 
-with open('outputfirst.dot', 'w') as f:
-    write_dot(first, f)
-
-with open('outputsecond.dot', 'w') as f:
-    write_dot(second, f)
+# with open('outputfirst.dot', 'w') as f:
+#     write_dot(first, f)
+#
+# with open('outputsecond.dot', 'w') as f:
+#     write_dot(second, f)
 
