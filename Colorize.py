@@ -22,7 +22,7 @@ create a new 'new list' and start the process over again
 
 
 mode = 2  # 0 = count automorphisms between graphs, 1 = count automorphisms in a singel graph, 2 = detect isomorphism
-input_file = "input/basic/basicGI1.grl"
+input_file = "input/basic/basicGIAut.grl"
 
 
 def colorize_graph(gr: Graph):
@@ -96,7 +96,7 @@ def colorize_list(graphs : list, auto: bool = False, single: bool = False):
                     index = vertex.color + 1
         triples = list()
         for graph1, graph2 in tuples:
-            # print("Testing graph " + str(graph1.id) + " against graph " + str(graph2.id))
+            print("Testing graph " + str(graph1.id) + " against graph " + str(graph2.id))
             plist = purify_list(q, graph1, graph2)
             count = count_isomorphisms(plist, graph1, graph2, index, list(), list(), auto)
             if count > 0:
@@ -109,32 +109,62 @@ def colorize_list(graphs : list, auto: bool = False, single: bool = False):
             print("Graph: Number of automorphisms:")
             for graph1, graph2, count in triples:
                 print("{}:    {}".format(graph1.id, count))
-        elif auto:
-            print("Sets of isomorphic graphs: Number of automorphisms:")
-            for graph1, graph2, count in triples:
-                print("[{},{}]                {}".format(graph1.id, graph2.id, count))
+                silent_remove_from_list(graphs, graph1)
+                silent_remove_from_list(graphs, graph2)
         else:
-            print("Sets of isomorphic graphs:")
+            if auto:
+                print("Sets of isomorphic graphs: Number of automorphisms:")
+            else:
+                print("Sets of isomorphic graphs:")
             isomorphs = list()
             for graph1, graph2, count in triples:
                 if len(isomorphs) == 0:
                     isomorphs.append([graph1, graph2])
+                    silent_remove_from_list(graphs, graph1)
+                    silent_remove_from_list(graphs, graph2)
                 else:
+                    found = False
                     for l in isomorphs:
                         if graph1 in l and graph2 not in l:
                             l.append(graph2)
+                            silent_remove_from_list(graphs, graph2)
+                            found = True
                             break
                         elif graph2 in l and graph1 not in l:
                             l.append(graph1)
+                            silent_remove_from_list(graphs, graph1)
+                            found = True
                             break
-                        elif graph2 not in l and graph1 not in l:
-                            isomorphs.append([graph1, graph2])
-                            break
+                        elif graph2 in l and graph1 in l:
+                            found = True
+                    if not found:
+                        isomorphs.append([graph1, graph2])
+                        silent_remove_from_list(graphs, graph1)
+                        silent_remove_from_list(graphs, graph2)
             for l in isomorphs:
                 sys.stdout.write("[")
                 for graph in l:
+                    try:
+                        graphs.remove(graph)
+                    except ValueError:
+                        pass
                     sys.stdout.write("{}, ".format(graph.id))
-                print("]")
+                if auto:
+                    for graph1, graph2, count in triples:
+                        if graph1 in l:
+                            print("]    ///     {}".format(count))
+                            break
+                else:
+                    print("]")
+        for graph in graphs:
+            print("[{}]".format(graph.id))
+
+
+def silent_remove_from_list(l: list, item):
+    try:
+        l.remove(item)
+    except ValueError:
+        pass
 
 
 def sort_triples(triples):
@@ -218,6 +248,8 @@ def count_isomorphisms(list_vertices: list, graph1: Graph, graph2: Graph, index:
         if not check_dict_in_list(automorphisms, res):
             automorphisms.append(res)
             return 1
+        if not auto:
+            return 1
         return 0
     num = 0
     color_classes = get_color_classes(list_vertices)
@@ -249,8 +281,6 @@ def count_isomorphisms(list_vertices: list, graph1: Graph, graph2: Graph, index:
             # print("down vvvvvvvvvvvvvvv")
             num += count_isomorphisms(q.copy(), graph1, graph2, indext + 1, servicable_vertices, automorphisms, auto)
             # print("up ^^^^^^^^^^^^^")
-            if not auto and num > 0:
-                return num
             for v2 in inc_col.keys():
                 v2.color = inc_col[v2]
                 v2.color_next = inc_col[v2]
