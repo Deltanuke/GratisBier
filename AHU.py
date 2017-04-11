@@ -107,7 +107,7 @@ def equal_subtrees(v: Vertex, others: List["Vertex"]):
     return equals
 
 
-with open('input/Bonus/bonusAut4/bonusAut4.grl') as _file:
+with open('input/Competition/c1/comp1.gr') as _file:
     gr,o = read_graph_list(Graph, _file)
 
 number_of_graphs = len(gr)
