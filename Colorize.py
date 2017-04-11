@@ -1,8 +1,4 @@
-from graph import *
-import time
 from graph_io import *
-import time
-import copy
 
 """"
 the idea:
@@ -25,7 +21,7 @@ create a new 'new list' and start the process over again
 """
 
 
-mode = 1   2  # 0 = count automorphisms between graphs, 1 = count automorphisms in a singel graph, 2 = detect isomorphism
+mode = 2  # 0 = count automorphisms between graphs, 1 = count automorphisms in a singel graph, 2 = detect isomorphism
 input_file = "input/basic/basicGI1.grl"
 
 
@@ -528,7 +524,6 @@ def colorize_faster(main_list: "list", index: int) -> Tuple[list, int]:
 
 def is_done(lists: "list"):
     return True
-
 
 # with open('input/products72.grl') as _file:
 #     g, o = read_graph_list(Graph, _file)
