@@ -20,7 +20,6 @@ def assign_canonical_names(v: Vertex, super: Vertex = None):
     if super is not None:
         children.remove(super)
     if len(children) <= 0:
-        #print("Leaf: %s. Ch'10', '10']ildren: %s. #children: %s" % (v, children, len(children)))
         v.canonical_name = "10"
     else:
         for u in children:
@@ -29,21 +28,16 @@ def assign_canonical_names(v: Vertex, super: Vertex = None):
         for u in children:
             children_names.append(u.canonical_name)
         children_names = sorted(children_names)
-        #print("Children names: %s" % children_names)
         temp = "1"
         for i in range(0, len(children_names)):
             temp += children_names[i]
         temp += "0"
-        #print("The newly assigned name is %s" % temp)
         v.canonical_name = temp
 
 
 def ahu_tree_isomorhpism(G1: Graph, G2: Graph):
     r11, r12 = root(G1)
     r21, r22 = root(G2)
-
-    #print("The roots are %s and %s for graph 1" % (r11, r12))
-    #print("The roots are %s and %s for graph 1" % (r21, r22))
 
     if r12 is None and r22 is None:
         return ahu_root_isomorphism(r11, r21)
@@ -61,19 +55,68 @@ def ahu_root_isomorphism(r1: Vertex, r2: Vertex):
     else:
         return False
 
-with open('input/bigtrees3.grl') as _file:
+
+def ahu_tree_authomorphisms(G: Graph):
+    r11, r12 = root(G)
+    assign_canonical_names(r11)
+    return recursive_auth_calc(r11, r11.children())
+
+
+def recursive_auth_calc(v: Vertex, children: List["Vertex"]):
+    result = 1
+    if len(children) < 1:
+        return 1
+    for c in children:
+        result = result * recursive_auth_calc(c, c.children(v))
+    return result * calculate_no_auth(children)
+
+
+def calculate_no_auth(children: List["Vertex"]):
+    count = 1
+    groups = []
+    for c1 in children:
+        if already_in_group(c1, groups):
+            continue
+        group = equal_subtrees(c1, children)
+        if len(group) > 1:
+            groups.append(group)
+    for group in groups:
+        count = count * fact(len(group))
+    return count
+
+
+def fact(n):
+    if n == 0 or n == 1:
+        return 1
+    else:
+        return n * fact(n - 1)
+
+
+def already_in_group(v: Vertex, groups):
+    for group in groups:
+        if v in group:
+            return True
+    return False
+
+
+def equal_subtrees(v: Vertex, others: List["Vertex"]):
+    equals = [v]
+    for sibling in others:
+        if v != sibling and v.canonical_name == sibling.canonical_name:
+            equals.append(sibling)
+    return equals
+
+
+with open('input/Bonus/bonusAut4/bonusAut4.grl') as _file:
     gr,o = read_graph_list(Graph, _file)
 
-start = time.time()
-for i in range(0, 100):
-    for x in range(0, 3):
-        for y in range(0, 3):
-            iso = ahu_tree_isomorhpism(gr[x], gr[y])
-diff = (time.time() - start) / 1600
+number_of_graphs = len(gr)
 
-print("Time: %s" % (diff))
+isos = []
 
-
-#isomorph = ahu_tree_isomorhpism(first, second)
-#print(isomorph)
-
+for x in range(number_of_graphs):
+    if gr[x].is_tree():
+        print("%s is a tree" % x)
+        print("Number of aut: %s" % ahu_tree_authomorphisms(gr[x]))
+    else:
+        print("%s is no tree" % x)

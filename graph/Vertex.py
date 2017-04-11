@@ -138,7 +138,8 @@ class Vertex(object):
         vertices_path.append(self)
         return length, vertices_path
 
-    def children(self, head):
+    def children(self, head=None):
         n = self.neighbours.copy()
-        n.remove(head)
+        if head is not None:
+            n.remove(head)
         return n
