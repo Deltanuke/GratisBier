@@ -1,10 +1,13 @@
+General Graph Isomorphism and Automorphism.
 Coloring:
 1. Open Colorize.py
 2. Set the desired mode in the mode variable (line: 24)
 3. Select the desired input file (line: 25)
 4. Run Colorize.py
 
-Tree Isomorphism:
+
+Tree Isomorphism and Automorphism.
+AHU-algorithm:
 1. Open AHU.py
 2. Set the desired mode in the mode variable (line: 7)
 3. Select the desired input file (line: 6)
