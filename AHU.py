@@ -3,8 +3,9 @@ from graph import Graph, Vertex
 from graph_io import *
 import time
 
-path = "input/Competition/c1/comp1.gr"
-mode = 0  # 0 for isomorphism, 1 for authomorphism
+path = "input/bigtrees3.grl"
+mode = 1  # 0 for isomorphism, 1 for authomorphism
+
 
 def root(G: Graph):
     r = G.vertices[0]
@@ -127,10 +128,12 @@ if mode == 0:
                 print("Graphs: %s and %s isomorph = %s" % (x, y, ahu_tree_isomorhpism(gr[x], gr[y])))
 elif mode == 1:
     #authomorphisms
+    total = 0
     for x in range(len(gr)):
         if not gr[x].is_tree():
             print("Graph: %s is not a tree. Skipping..." % x)
             continue
+        result = ahu_tree_authomorphisms(gr[x])
         print("Graph: %s. #Authomorphisms = %s" % (x, ahu_tree_authomorphisms(gr[x])))
 else:
     print("Wrong mode selected")

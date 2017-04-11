@@ -1,4 +1,5 @@
 from graph_io import *
+import time
 
 """"
 the idea:
@@ -21,8 +22,8 @@ create a new 'new list' and start the process over again
 """
 
 
-mode = 2  # 0 = count automorphisms between graphs, 1 = count automorphisms in a single graph, 2 = detect isomorphism
-input_file = "input/basic/basicGIAut.grl"
+mode = 1  # 0 = count automorphisms between graphs, 1 = count automorphisms in a single graph, 2 = detect isomorphism
+input_file = "input/bigtrees2.grl"
 
 
 def colorize_graph(gr: Graph):
@@ -565,25 +566,25 @@ def is_done(lists: "list"):
 with open(input_file) as _file:
     g, o = read_graph_list(Graph, _file)
 
+start = time.time()
+i = 0
+for graph in g:
+    graph.id = i
+    i += 1
+if mode == 0:
+    colorize_list(g, True)
+elif mode == 1:
+    with open(input_file) as _file:
+        g2, o = read_graph_list(Graph, _file)
+    for graph in g2:
+        g.append(graph)
+    i = 0
+    for graph in g:
+        graph.id = i
+        i += 1
+    colorize_list(g, True, True)
+elif mode == 2:
+    colorize_list(g, False)
 
-
-#
-# i = 0
-# for graph in g:
-#     graph.id = i
-#     i += 1
-# if mode == 0:
-#     colorize_list(g, True)
-# elif mode == 1:
-#     with open(input_file) as _file:
-#         g2, o = read_graph_list(Graph, _file)
-#     for graph in g2:
-#         g.append(graph)
-#     i = 0
-#     for graph in g:
-#         graph.id = i
-#         i += 1
-#     colorize_list(g, True, True)
-# elif mode == 2:
-#     colorize_list(g, False)
-
+diff = time.time() - start
+print("The time it took: %s" % diff)
