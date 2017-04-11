@@ -1,4 +1,4 @@
-General Graph Isomorphism and Automorphism.
+General Graph Isomorphism and Automorphism.\n
 Coloring:
 1. Open Colorize.py
 2. Set the desired mode in the mode variable (line: 24)
@@ -6,7 +6,7 @@ Coloring:
 4. Run Colorize.py
 
 
-Tree Isomorphism and Automorphism.
+Tree Isomorphism and Automorphism.\n
 AHU-algorithm:
 1. Open AHU.py
 2. Set the desired mode in the mode variable (line: 7)
